@@ -43,21 +43,21 @@ class _AllCommunityListScreenState extends State<AllCommunityListScreen> {
       appBar: AppBar(
         elevation: 0,
         title: const Text('Communities'),
-        actions: [
-          TextButton(
-            onPressed: () async {
-              Provider.of<CommunityFunctionClass>(context, listen: false)
-                  .storeDeviceToken('1111');
-            },
-            child: Chip(
-              backgroundColor: Colors.white,
-              label: Text(
-                'Following',
-                style: Theme.of(context).textTheme.bodySmall,
-              ),
-            ),
-          ),
-        ],
+        // actions: [
+        //   TextButton(
+        //     onPressed: () async {
+        //       Provider.of<CommunityFunctionClass>(context, listen: false)
+        //           .storeDeviceToken('1111');
+        //     },
+        //     child: Chip(
+        //       backgroundColor: Colors.white,
+        //       label: Text(
+        //         'Following',
+        //         style: Theme.of(context).textTheme.bodySmall,
+        //       ),
+        //     ),
+        //   ),
+        // ],
       ),
       drawer: drawerForUserInfo(),
       body: communityList.isEmpty

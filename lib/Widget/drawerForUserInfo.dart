@@ -4,6 +4,7 @@ import 'package:nex_social/Screens/CommunityScreens/CreateCommunity.dart';
 import 'package:nex_social/Screens/Drawer/AccountInfo.dart';
 import 'package:nex_social/Screens/Drawer/PrivacyPolicy.dart';
 import 'package:nex_social/Screens/Drawer/UpdateAccount.dart';
+import 'package:nex_social/Widget/Drawer/YourCommunities.dart';
 import 'package:nex_social/main.dart';
 
 class drawerForUserInfo extends StatelessWidget {
@@ -81,9 +82,11 @@ class drawerForUserInfo extends StatelessWidget {
             ),
           ),
           GestureDetector(
-            onTap: () {},
+            onTap: () {
+              Navigator.of(context).pushNamed(YourCommunities.routeName);
+            },
             child: drawerTilte(
-              'Your communities',
+              'Joined Communities',
               Icons.group,
             ),
           ),

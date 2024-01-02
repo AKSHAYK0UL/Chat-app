@@ -17,6 +17,7 @@ import 'package:nex_social/Screens/DrawerScreen/UpdatePassword.dart';
 import 'package:nex_social/Screens/DrawerScreen/UpdateUserName.dart';
 import 'package:nex_social/Screens/DrawerScreen/resetUserPassword.dart';
 import 'package:nex_social/Widget/AuthWidgets/ShowScreenOnUserData.dart';
+import 'package:nex_social/Widget/Drawer/YourCommunities.dart';
 import 'package:nex_social/firebase_options.dart';
 import 'package:provider/provider.dart';
 
@@ -107,6 +108,7 @@ class NexSocial extends StatelessWidget {
           ResetUserPassword.routeName: (context) => ResetUserPassword(),
           DeleteAccount.routeName: (context) => const DeleteAccount(),
           PrivacyPolicy.routeName: (context) => const PrivacyPolicy(),
+          YourCommunities.routeName: (context) => const YourCommunities(),
         },
       ),
     );

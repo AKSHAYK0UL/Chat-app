@@ -31,6 +31,8 @@ class CommunityFunctionClass with ChangeNotifier {
     return [..._communityDataList];
   }
 
+  List<CommunityModel> _followedCommunityList = [];
+
   bool checkIfCommunityNameIsAvaiable(String communityname) {
     final isAvaiable = _communityDataList.where((community) =>
         community.communityName.toLowerCase() == communityname.toLowerCase());
@@ -100,7 +102,7 @@ class CommunityFunctionClass with ChangeNotifier {
       rethrow;
     }
   }
-  
+
   Future<void> getAllCommunityList() async {
     try {
       databaseRef.child('CommunityList').onValue.listen(
@@ -165,5 +167,64 @@ class CommunityFunctionClass with ChangeNotifier {
     } catch (e) {
       rethrow;
     }
+  }
+
+// when user follow a community it gets add to the follow community list
+  Future<void> addToFollowCommunityList(
+      CommunityModel followCommunity, String userID) async {
+    final followCommunityListDB = databaseRef
+        .child('followCommunityListDB')
+        .child(userID)
+        .child(followCommunity.communityName + userID);
+
+    try {
+      await followCommunityListDB.set({
+        'Admin name': followCommunity.adminName,
+        'Community name': followCommunity.communityName,
+        'Community desp': followCommunity.communtiyDesp,
+        'Community Follow Date': DateTime.now().toString(),
+        'Community Node Id': followCommunity.nodeId,
+        'Admin UID': followCommunity.adminUID,
+      });
+      _followedCommunityList.add(
+        CommunityModel(
+          adminName: followCommunity.adminName,
+          adminUID: followCommunity.adminUID,
+          communityName: followCommunity.communityName,
+          communtiyDesp: followCommunity.communtiyDesp,
+          community_created_data: followCommunity.community_created_data,
+          nodeId: followCommunity.nodeId,
+        ),
+      );
+    } catch (_) {
+      rethrow;
+    }
+  }
+
+  // fetching data using Firebase animated list
+
+// when user unfollow a community it gets removed from the follow community list
+
+  Future<void> removeFromFollowCommunityList(
+      String _communityName, String userID) async {
+    try {
+      int index = _followedCommunityList
+          .indexWhere((element) => element.communityName == _communityName);
+      String cName = _followedCommunityList[index].communityName;
+
+      _followedCommunityList.removeAt(index);
+      await databaseRef
+          .child('followCommunityListDB')
+          .child(userID)
+          .child(_communityName + userID)
+          .remove();
+    } catch (_) {
+      rethrow;
+    }
+  }
+
+  List<CommunityModel> get getfollowedCommunityList {
+    print(_followedCommunityList);
+    return [..._followedCommunityList];
   }
 }

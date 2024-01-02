@@ -23,6 +23,12 @@ class _OpenCommunityScreensState extends State<OpenCommunityScreens> {
   bool _isloading = false;
 
   @override
+  void dispose() {
+    _postController.dispose();
+    super.dispose();
+  }
+
+  @override
   void didChangeDependencies() {
     if (_istrue) {
       setState(() {
@@ -84,10 +90,35 @@ class _OpenCommunityScreensState extends State<OpenCommunityScreens> {
           title: Text(communityName),
           actions: [
             TextButton(
-              onPressed: () {
+              onPressed: () async {
                 onFollow();
-                Provider.of<CommunityFunctionClass>(context, listen: false)
+                await Provider.of<CommunityFunctionClass>(context,
+                        listen: false)
                     .setFollow(communityName, user.uid, follows);
+                CommunityModel foll = CommunityModel(
+                  adminName: adminName,
+                  adminUID: adminUID,
+                  communityName: communityName,
+                  communtiyDesp: commmunityDesp,
+                  community_created_data: DateTime.parse(RegisterDate),
+                  nodeId: CommunityNodeId,
+                );
+                if (follows) {
+                  await Provider.of<CommunityFunctionClass>(
+                          navigatorkey.currentContext!,
+                          listen: false)
+                      .addToFollowCommunityList(foll, user.uid);
+                } else {
+                  await Provider.of<CommunityFunctionClass>(
+                          navigatorkey.currentContext!,
+                          listen: false)
+                      .removeFromFollowCommunityList(
+                          foll.communityName, user.uid);
+                }
+                Provider.of<CommunityFunctionClass>(
+                        navigatorkey.currentContext!,
+                        listen: false)
+                    .getfollowedCommunityList;
               },
               child: Chip(
                 backgroundColor: Colors.white,
@@ -150,7 +181,7 @@ class _OpenCommunityScreensState extends State<OpenCommunityScreens> {
                             //     b.key!.compareTo(a.key!),
                             shrinkWrap: true,
                             scrollDirection: Axis.vertical,
-                            //query: ref,
+                            //query: ref,5
                             itemCount: postList.length,
                             itemBuilder: (context, index) {
                               final postInfo = postList[index];
